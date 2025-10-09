@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Prédiction du risque de defaut</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FontAwesome & Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            min-height: 170vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Empêche le scroll horizontal */
+        }
+
+        nav{
+            height: 80px;
+          border-bottom: 4px solid rgb(185, 173, 17);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+        }
+
+        main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .accueil{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(185, 173, 17);
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 100px;
+            text-align: center;
+        }
+
+        .texte{
+            position: absolute;
+            left: 350px;
+        }
+
+    
+
+        .titre{
+            display: flex;
+            background-color: rgba(185, 173, 17, 0.6);
+            width: 1100px;
+            border-radius: 10px 10px 0 0;
+            height: 70px;
+            align-items: center;
+           
+        }
+        
+        .total{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+            width: 1100px;
+        }
+        .item {
+        background: lightblue;
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        height: 100px;
+        }
+
+        .block1, .block2{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+            width: 1100px;
+        }
+        .items{
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .titre_graph{
+            height: 40px;
+            border-radius: 5px;
+            width: 541px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            color: #f4f6f8;
+        }
+
+
+
+
+    </style>
+    </head>
+    <body>
+        <nav>
+            <div class="image"><img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk"  style="width: 150px; height: 57px; margin-left: 50px;"></div>
+            <div class="texte">
+                <p style="color: rgb(185, 173, 17); font-weight: bold; font-size: 30px; margin-bottom: 3px;">Tableau de bord</p>
+                <h6 style="color: gray; font-size: 10px;">Système intelligent de prédiction du risque de defaut des clients</h6>
+            </div>
+            <a href="{% url 'home' %}" style="text-decoration: none;">
+                <div class="accueil">
+                    <img src="{% static 'images/accueil.png' %}" alt="Accueil" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                    <p style="color: rgb(241, 244, 242) ; font-size: 15px; margin-left: 10px; margin-bottom: 5px;">Accueil</p>
+                </div>
+            </a>
+        </nav>
+        <main>
+            <div class="titre">
+                 <img src="{% static 'images/check-list1.png' %}" alt="Check list" style="width: 20px; height: 16px; margin-left: 10px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                 <p style="color: #f4f6f8; margin-left: 10px;">Tableau de bord analytics</p>
+            </div>
+            <div class="total">
+                <div class="item" style="background-color: rgba(8, 8, 220, 0.2); color: rgb(8, 8, 220); font-weight: bold;">
+                    <p>Total prédiction</p>
+                    {{ total}}
+                </div>
+                <div class="item" style="background-color: rgba(245, 182, 66, 0.2); color: rgb(245, 182, 66); font-weight: bold;">
+                    <p> Score Moyen</p>
+                    {{ stats.moyenne|floatformat:2 }}
+                </div>
+                <div class="item" style="background-color: rgba(41, 163, 41, 0.2); color: rgb(41, 163, 41); font-weight: bold;">
+                    <p>Montant Total (FCFA)</p>
+                    {{ stats.somme }}
+                </div>
+                <div class="item" style="background-color: rgba(237, 93, 93, 0.2); color: rgb(237, 93, 93); font-weight: bold;">
+                    <p>Risque Elevé</p>
+                    {{ niveau}}
+                    
+                </div>
+            </div>
+            <div class="block1">
+            <div class="items">
+                <div class="titre_graph" style="position: absolute; top: 340px; left: 82px; background-color: rgba(16, 123, 16, 0.6) ;">
+                    <p>Distribution des Niveaux de risque</p>
+                </div>
+                <div class="graphique"> {{ graph|safe }} </div>
+            </div>
+            <div class="items">
+                <div class="titre_graph" style="position: absolute; top: 340px; left: 642px; background-color: rgba(25, 43, 243, 0.6) ;">
+                    <p style="display: flex; align-items: center; justify-content: center;">Evolution des scores de risque</p>
+                </div>
+                <div class="graphique"> 
+                {{ graph_line|safe}}
+                </div>
+            </div>
+            </div>
+            <div class="block2">
+            <div class="items">
+                <div class="titre_graph" style="position: absolute; top: 660px; left: 82px; background-color: rgba(248, 138, 12, 0.6) ;">
+                    <p>Analyse par tranche d'âge</p>
+                </div>
+                <div class="graphique">
+                {{ graph_score|safe}}
+                </div>
+            </div>
+            <div class="items">
+                <div class="titre_graph" style="position: absolute; top: 660px; left: 642px; background-color: rgba(115, 5, 118, 0.6) ;">
+                    <p>Montant du prêt vs Score de risque</p>
+                </div>
+                <div class="graphique">
+                {{ graph_aire|safe}}
+                </div>
+            </div>
+            </div>
+        
+        </main>
+        <footer></footer>
+    </body>
+</html>
+

@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Prédiction du risque de defaut</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FontAwesome & Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            min-height: 150vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Empêche le scroll horizontal */
+        }
+
+        nav{
+            height: 80px;
+          border-bottom: 4px solid rgb(175, 104, 5);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+        }
+
+        main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .accueil{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(175, 104, 5);
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 100px;
+            text-align: center;
+        }
+
+        .texte{
+            position: absolute;
+            left: 350px;
+        }
+
+        main{
+            width: 980px;
+            height: 700px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            text-align: center;
+            align-items: center;
+            margin-left: 150px;
+        }
+
+        .titre{
+            display: flex;
+            background-color: rgba(175, 104, 5, 0.6);
+            width: 980px;
+            border-radius: 10px 10px 0 0;
+            height: 70px;
+            align-items: center;
+           
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 5000px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background: rgba(175, 104, 5, 0.1);
+            font-size: 12px;
+            color:rgba(175, 104, 5, 0.6) ;
+        }
+
+        td{
+            font-size: 12px;
+            
+        }
+
+        .formulaire{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        thead th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        thead th:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+
+        tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+
+        td:first-child, th:first-child {
+        border-left: none; /* Supprime les lignes verticales */
+    }
+
+    td:last-child, th:last-child {
+        border-right: none; /* Supprime les lignes verticales */
+    }
+
+    .bg-red {
+    background-color: #f8d7da;
+}
+.bg-yellow {
+    background-color: #fff3cd;
+}
+.bg-green {
+    background-color: #d4edda;
+}
+
+
+
+    </style>
+    </head>
+    <body>
+        <nav>
+            <div class="image"><img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk"  style="width: 150px; height: 57px; margin-left: 50px;"></div>
+            <div class="texte">
+                <p style="color: rgb(175, 104, 5); font-weight: bold; font-size: 30px; margin-bottom: 3px;">Historique</p>
+                <h6 style="color: gray; font-size: 10px;">Système intelligent de prédiction du risque de defaut des clients</h6>
+            </div>
+            <a href="{% url 'home' %}" style="text-decoration: none;">
+                <div class="accueil">
+                    <img src="{% static 'images/accueil.png' %}" alt="Accueil" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                    <p style="color: rgb(241, 244, 242) ; font-size: 15px; margin-left: 10px; margin-bottom: 5px;">Accueil</p>
+                </div>
+            </a>
+        </nav>
+        <main>
+            <div class="titre">
+                 <img src="{% static 'images/check-list1.png' %}" alt="Check list" style="width: 20px; height: 16px; margin-left: 10px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                 <p style="color: #f4f6f8; margin-left: 10px;">Historique des prédictions</p>
+            </div>
+            <div class="formulaire">
+                <div class="recherche">
+                    <form method="GET" action="{% url 'historique' %}" style="margin-top: 20px; margin-left: 50px;">
+                        <input type="text" name="search" placeholder="Rechercher par nom ou ID" class="form-control" style="width: 300px; display: inline-block;">
+                        <button type="submit" class="btn btn-primary" style="background-color: rgba(175, 104, 5, 0.6); border-color: rgba(175, 104, 5, 0.6);">Rechercher</button>
+                    </form>
+
+                </div>
+                    <table style="width: 950px; border-radius: 10px; border: 1px solid rgba(175, 104, 5, 0.6); ">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nom et prénom</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Score de Risque</th>
+                                <th scope="col">Niveau</th>
+                                <th scope="col">Montant du crédit (FCFA)</th>
+                                <th scope="col">Revenu mensuel (FCFA)</th>
+                                <th scope="col">Âge</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for client in page_obj %}
+                            <tr>
+                                <td style="color: blue;">{{ client.id_client }}</td>
+                                <td style="font-weight: bold;">{{ client.nom_et_prenom }}</td>
+                                <td style="color: gray;">{{ client.date}}</td>
+                                <td style="color: blue; font-weight: bold;">{{ client.score_de_risque }}</td>
+                                <td>{{ client.niveau }}</td>
+                                <td style="font-weight: bold;">{{ client.montant_demande }}</td>
+                                <td style="font-weight: bold;">{{ client.revenu_mensuel }}</td>
+                                <td style="color: gray;">{{ client.age }}</td>
+                                <td>
+                                    <form action="{% url 'historique' %}" method="POST" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="client_id" value="{{ client.id_client }}">
+                                        <button type="submit" class="btn btn-danger btn-sm" style="width: 65px; font-size: 10px;">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </td>
+                                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+        </main>
+        <footer></footer>
+    </body>
+</html>
+

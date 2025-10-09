@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Prédiction du risque de defaut</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FontAwesome & Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            min-height: 180vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Empêche le scroll horizontal */
+        }
+
+        nav{
+            height: 80px;
+          border-bottom: 4px solid rgb(20, 178, 57);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: fixed;   /* le nav reste fixé */
+          top: 0;            /* toujours en haut */
+          left: 0;
+          width: 100%;       /* occupe toute la largeur */
+          z-index: 1000;     /* reste au-dessus du contenu */
+          background-color: white; /* couleur de fond pour recouvrir */
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* petite ombre */
+
+        }
+
+        main{
+          
+            margin-top: 140px;
+        }
+
+        .accueil{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(13, 110, 36);
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 100px;
+            text-align: center;
+        }
+
+        .texte{
+            position: absolute;
+            left: 350px;
+        }
+
+        main{
+            width: 900px;
+            height: 700px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            text-align: center;
+            align-items: center;
+            margin-left: 180px;
+        }
+
+        .titre{
+            display: flex;
+            background-color: rgba(13, 110, 36, 0.6);
+            width: 900px;
+            border-radius: 10px 10px 0 0;
+            height: 70px;
+            align-items: center;
+           
+        }
+
+         .form1{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+         }
+
+        .block{
+            display: flex;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            
+        }
+
+        .block2{
+            margin-left: 10px;
+        }
+
+        .block1{
+            margin-right: 10px;
+        }
+
+        .evaluer{
+            width: 850px;
+            background-color: rgba(13, 110, 36, 0.6);
+            border-radius: 5px;
+            border: none;
+            height: 40px;
+            color: white;
+        }
+
+        input, select, textarea {
+        width: 400px;
+        height: 30px;
+        font-size: 12px;
+        padding: 5px;
+        border: 1px solid rgba(20, 178, 57, 0.6) ;
+        border-radius: 5px;
+        color: gray;
+        background-color: rgb(241, 239, 239);
+        outline: none; /* enlève le contour bleu par défaut */
+        transition: border-color 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: green;
+        box-shadow: 0 0 10px rgba(0, 128, 0, 0.5); /* petit effet lumineux vert */
+    }
+
+    label{
+        font-size: 12px;
+        font-weight: bold;
+        color: rgb(13, 110, 36);
+    }
+    .form2{
+        margin-top: 20px;
+    }
+
+    .pdf{
+            width: 850px;
+            background-color: rgba(13, 110, 36, 0.6);
+            border-radius: 5px;
+            border: none;
+            height: 40px;
+            color: white;
+        }
+
+    </style>
+    </head>
+    <body>
+        <nav>
+            <div class="image"><img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk"  style="width: 150px; height: 57px; margin-left: 50px;"></div>
+            <div class="texte">
+                <p style="color: rgb(13, 110, 36); font-weight: bold; font-size: 30px; margin-bottom: 3px;">Evaluation de risque</p>
+                <h6 style="color: gray; font-size: 10px;">Système intelligent de prédiction du risque de defaut des clients</h6>
+            </div>
+            <a href="{% url 'home' %}" style="text-decoration: none;">
+                <div class="accueil">
+                    <img src="{% static 'images/accueil.png' %}" alt="Accueil" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                    <p style="color: rgb(241, 244, 242) ; font-size: 15px; margin-left: 10px; margin-bottom: 5px;">Accueil</p>
+                </div>
+            </a>
+        </nav>
+        <main>
+            <div class="titre">
+                 <img src="{% static 'images/check-list1.png' %}" alt="Check list" style="width: 20px; height: 16px; margin-left: 10px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                 <p style="color: #f4f6f8; margin-left: 10px;">Informations du client</p>
+            </div>
+
+        <form method="post" class="form1">
+            <div class="block">
+            {% csrf_token %}
+                <div class="block1">
+                    <div>
+                        <label class="block mb-1 font-semibold">Nom et prénom du client</label>
+                        {{ form.nom_et_prenom }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Age</label>
+                        {{ form.age }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Sexe</label>
+                        {{ form.sexe }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Raison du prêt</label>
+                        {{ form.raison_pret }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Statut Matrimonial</label>
+                        {{ form.statut_matrimonial }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Niveau d'éducation</label>
+                        {{ form.niveau_education }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Epargne disponible</label>
+                        {{ form.epargne_disponible }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Revenu mensuel</label>
+                        {{ form.revenu_mensuel }}
+                    </div>
+                </div>
+
+                <div class="block2">
+                    <div>
+                        <label class="block mb-1 font-semibold">Montant demandé</label>
+                        {{ form.montant_demande}}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Ancienneté bancaire</label>
+                        {{ form.anciennete_bancaire }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Statut du logement</label>
+                        {{ form.statut_logement }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Nombre de personnes en charge</label>
+                        {{ form.nbre_personne_charge }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Type d'activité</label>
+                        {{ form.type_activite }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Historique de remboursement</label>
+                        {{ form.historique_remboursement}}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Garanties</label>
+                        {{ form.garanties }}
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Choisir un modèle</label>
+                        {{ form.modele_choice}}
+                    </div>
+                </div>
+                </div>
+            <button type="submit" class="evaluer">
+                Evaluer le risque
+            </button>
+        </form>
+
+        </main>
+
+{% if prediction is not None %}
+
+        {% if pdf_ready %}
+        <form method="post" class="form2">
+            <div class="fichier" style="display: flex; justify-content: center; align-items: center; margin-top: 20px; ">
+            {% csrf_token %}
+            <button type="submit" name="download_pdf" class="pdf">📄 Télécharger la fiche d'évaluation</button>
+            </div>
+        </form>
+    {% endif %}
+{% endif %}
+                <!-- Fenêtre modale -->
+<div id="resultModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p id="predictionText"></p>
+  </div>
+</div>
+
+<style>
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  .close {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+    {% if prediction is not None %}
+    var modal = document.getElementById("resultModal");
+    var span = document.getElementsByClassName("close")[0];
+    var text = document.getElementById("predictionText");
+
+    // Texte résultat
+    var message = "{% if prediction == 1 %}🚨 Le client fera un defaut de paiement{% else %}✅ Client fiable{% endif %}";
+    var prob = "Probabilité de défaut : {{ probability|floatformat:2 }}";
+
+    text.innerHTML = message + "<br><strong>" + prob + "</strong>";
+
+    modal.style.display = "block";
+
+    span.onclick = function() { modal.style.display = "none"; }
+    window.onclick = function(event) {
+      if (event.target == modal) { modal.style.display = "none"; }
+    }
+  {% endif %}
+</script>
+        <footer></footer>
+    </body>
+</html>
+

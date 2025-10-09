@@ -1,0 +1,130 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Rapport visuel - Prédiction du risque de défaut
+        </title>
+    </head>
+   <style>
+    body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            min-height: 180vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Empêche le scroll horizontal */
+        }
+
+         .accueil{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(114, 17, 125);
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 100px;
+            text-align: center;
+        }
+
+        nav{
+            height: 80px;
+          border-bottom: 4px solid rgb(114, 17, 125);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: fixed;   /* le nav reste fixé */
+          top: 0;            /* toujours en haut */
+          left: 0;
+          width: 100%;       /* occupe toute la largeur */
+          z-index: 1000;     /* reste au-dessus du contenu */
+          background-color: white; /* couleur de fond pour recouvrir */
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* petite ombre */
+
+        }
+
+        .texte{
+            position: absolute;
+            left: 350px;
+        }
+
+        main{
+           
+            margin-top: 100px;
+        }
+
+         button{
+            width: 200px;
+            background-color: rgb(114, 17, 125);
+            border-radius: 5px;
+            border: none;
+            height: 40px;
+            color: white;
+            margin-top: 10px;
+        }
+
+   </style>
+    <body>
+
+        <nav>
+            <div class="image"><img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk"  style="width: 150px; height: 57px; margin-left: 50px;"></div>
+            <div class="texte">
+                <p style="color: rgb(114, 17, 125); font-weight: bold; font-size: 30px; margin-bottom: 3px;">Entrainement du modèle</p>
+                <h6 style="color: gray; font-size: 10px;">Système intelligent de prédiction du risque de defaut des clients</h6>
+            </div>
+            <a href="{% url 'home' %}" style="text-decoration: none;">
+                <div class="accueil">
+                    <img src="{% static 'images/accueil.png' %}" alt="Accueil" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                    <p style="color: rgb(241, 244, 242) ; font-size: 15px; margin-left: 10px; margin-bottom: 5px;">Accueil</p>
+                </div>
+            </a>
+        </nav>
+    <main>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+{% endfor %}
+
+    <h3 style="text-align: center; color: rgb(114, 17, 125);">Rapport visuel du fichier {{ filename }}</h3>
+    <div style="display: flex; justify-content: space-around; margin: 20px 0;">
+        <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+            <h3 style="color: rgb(114, 17, 125);">Nombre de clients</h3>
+            <p style="font-size: 24px; font-weight: bold;">{{ nombre_client }}</p>
+        </div>
+        <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+            <h3 style="color: rgb(0, 0, 0);">Âge moyen</h3>
+            <p style="font-size: 24px; font-weight: bold;">{{ age_moyen|floatformat:0 }} ans</p>
+        </div>
+        <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+            <h3 style="color: rgb(114, 17, 125);">Revenu moyen</h3>
+            <p style="font-size: 24px; font-weight: bold;">{{ revenu_moyen|floatformat:2 }} FCFA</p>
+        </div>
+        <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+            <h3 style="color: rgb(114, 17, 125);">Montant moyen emprunté</h3>
+            <p style="font-size: 24px; font-weight: bold;">{{ montant_moyen|floatformat:2 }} FCFA</p>
+        </div>
+        <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+            <h3 style="color: rgb(114, 17, 125);">Taux de défaut</h3>
+            <p style="font-size: 24px; font-weight: bold;">{{ taux_defaut|floatformat:2 }} %</p>    
+        </div>
+    </div>
+
+<h3 style="text-align: center; color: rgb(114, 17, 125);">Statistique univarié</h3>
+{% for img in univarie %}
+  <img src="data:image/png;base64,{{ img }}" style="max-width:800px; border:1px solid #ddd; margin:12px 0;" />
+{% endfor %}
+
+<h3 style="text-align: center; color: rgb(114, 17, 125);">Statistique bibariée</h3>
+{% for imge in charts %}
+  <img src="data:image/png;base64,{{ imge }}" style="max-width:800px; border:1px solid #ddd; margin:12px 0;" />
+{% endfor %}
+
+<a href="{% url 'upload' %}">
+    <button type="submit" class="bouton1">Précédent</button>
+</a>
+
+</main>
+
+    </body>
+</html>

@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Prédiction du risque de defaut</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FontAwesome & Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Empêche le scroll horizontal */
+        }
+
+        nav{
+            height: 80px;
+          border-bottom: 4px solid rgb(20, 178, 57);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+        }
+
+        main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .onglet{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .onglet .block1{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .onglet .block2{
+            display: flex;
+            justify-content: center;
+        }
+
+        .onglet .block1 .prediction{
+            background-color: rgb(13, 110, 36);
+            width: 380px;
+            height: 120px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            margin-left: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+       .onglet .block1 .prediction:hover {
+            transform: scale(1.05); /* zoom à 105% */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .onglet .block2 .historique{
+            background-color: rgb(175, 104, 5);
+            width: 380px;
+            height: 120px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .onglet .block2 .historique:hover {
+            transform: scale(1.05); /* zoom à 105% */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+
+        .onglet .block2 .dashboard{
+            background-color: rgb(185, 173, 17);
+            width: 380px;
+            height: 120px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            margin-left: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .onglet .block2 .dashboard:hover {
+            transform: scale(1.05); /* zoom à 105% */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .onglet .block1 .modele{
+            background-color: rgb(114, 17, 125);
+            width: 380px;
+            height: 120px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .onglet .block1 .modele:hover {
+            transform: scale(1.05); /* zoom à 105% */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+
+        .titre{
+            text-align: center;
+        }
+
+        .text1{
+            color: white;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .text2{
+            color: white;
+        }
+        .log{
+            display: flex;
+            align-items: center;
+           margin-left: 850px;
+           width: 400px;
+           margin-right: 30px;
+           gap: 15px;
+        }
+
+        .logout{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: rgb(220, 53, 69);
+            font-size: 10px;
+            border: 1px solid rgb(220, 53, 69);
+            border-radius: 5px;
+            background-color: rgb(226, 224, 224);
+            width: 100px;
+            justify-content: center;
+            margin-right: 30px;
+            height: 30px;
+        }
+
+        .responsable{
+           display: flex;
+           flex-direction: column;
+           gap: 2px;
+           font-size: 10px;
+           margin-top: 10px;
+        }
+
+    </style>
+    </head>
+    <body>
+        <nav>
+            <div class="image">
+                <img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk"  style="width: 150px; height: 57px; margin-left: 10px;">
+            </div>
+            <div class="log">
+                <div class="responsable">
+                    <p style="font-size: 9.5px;">
+                        <strong style="font-size: 12px;">{{ organisation.responsable }}</strong>
+                        <br>Responsable connecté
+                    </p>
+                    
+                </div>
+                <a href="{% url 'connexion' %}" style="text-decoration: none;">
+                <div class="logout">
+                    <img src="{% static 'images/logout.jpg' %}" alt="logout" style="width: 20px; height: 10px;">
+                    <p style="margin-top: 15px;">Déconnexion</p>
+                </div>
+                </a>
+            </div>
+        </nav>
+        <main>
+            <div class="titre">
+                <img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk" style="width: 260px; height: 80px; margin-left: 5px;">
+                <p style="color: rgb(13, 110, 36); font-weight: bold;">Bienvenue, {{ organisation.nom }}</p>
+                <h5 style="color: gray; margin-bottom: 20px;">Système intelligent de prédiction du risque de defaut en microfinance</h5>
+                
+            </div>
+
+            <div class="onglet">
+                <div class="block1">
+                    <a href="{% url 'upload' %}" style="text-decoration: none;">
+                        <div class="modele">
+                            <div class="im"><img src="{% static 'images/learning.png' %}" alt="modèle" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;"></div>
+                            <div class="texe">
+                                <p class="text1">Entraînement IA</p>
+                                <p class="text2">Créer et entraîner vos modèles</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'prediction'%}" style="text-decoration: none;">
+                        <div class="prediction">
+                            <div class="im"><img src="{% static 'images/check-list1.png' %}" alt="Check list" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;"></div>
+                            <div class="texe">
+                                <p class="text1">Evaluation du risque</p>
+                                <p class="text2">Evaluer le risque d'un client</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                </div>
+                <div class="block2">
+                    <a href="{% url 'historique'%}" style="text-decoration: none;">
+                        <div class="historique">
+                            <div class="im"><img src="{% static 'images/historique.png' %}" alt="Historique" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;"></div>
+                            <div class="texe">
+                                <p class="text1">Historique</p>
+                                <p class="text2">Consulter les évaluations précédentes</p>
+                            </div>
+                        </div>
+                    </a>
+                <a href="{% url 'analyse'%}" style="text-decoration: none;">
+                    <div class="dashboard">
+                        <div class="im"><img src="{% static 'images/analytics1.png' %}" alt="Tableau de bord" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;"></div>
+                            <div class="texe">
+                                <p class="text1">Analytics</p>
+                                <p class="text2">Tableau de bord et métriques</p>
+                            </div>
+                    </div>
+                </a>
+                </div>
+            </div>
+        </main>
+        <footer></footer>
+    </body>
+</html>
+

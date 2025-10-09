@@ -1,0 +1,281 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Sélection des Algorithmes</title>
+  <style>
+    body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            min-height: 180vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Empêche le scroll horizontal */
+        }
+
+        nav{
+            height: 80px;
+          border-bottom: 4px solid rgb(114, 17, 125);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: fixed;   /* le nav reste fixé */
+          top: 0;            /* toujours en haut */
+          left: 0;
+          width: 100%;       /* occupe toute la largeur */
+          z-index: 1000;     /* reste au-dessus du contenu */
+          background-color: white; /* couleur de fond pour recouvrir */
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* petite ombre */
+
+        }
+
+        main{
+          
+            margin-top: 110px;
+        }
+
+        .accueil{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(114, 17, 125);
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 100px;
+            text-align: center;
+        }
+        .texte{
+            position: absolute;
+            left: 350px;
+        }
+
+        .block1{
+            width: 900px;
+            height: 770px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            align-items: center;
+            justify-content: center;
+            
+        } 
+
+        main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .format{
+            width: 800px;
+            height: 180px;
+            margin: 15px;
+            border: 1px solid rgba(0,0,0,0.3);
+            border-radius: 10px;
+            background-color: rgb(244, 215, 247);
+            align-items: center;
+            font-size: 15px;
+            color: rgb(114, 17, 125);
+            
+        }
+        .bouton{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        button{
+            width: 800px;
+            background-color: rgb(114, 17, 125);
+            border-radius: 5px;
+            border: none;
+            height: 40px;
+            color: white;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+
+        .bouton button{
+            width: 300px;
+            background-color: rgb(114, 17, 125);
+            border-radius: 5px;
+            border: none;
+            height: 40px;
+            color: white;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+
+
+    h2 {
+      color: rgb(114, 17, 125);
+      margin-bottom: 10px;
+    }
+
+    p.description {
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 800px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: 0.2s ease;
+      
+    }
+
+    .card:hover {
+      background: rgb(244, 215, 247);
+    }
+
+    .card.selected {
+      border: 2px solid rgb(114, 17, 125);
+      background: rgb(244, 215, 247);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      color: black;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgb(114, 17, 125);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      font-size: 14px;
+      color: rgb(114, 17, 125);
+      display: none;
+    }
+
+    .card.selected .checkmark {
+      display: flex;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 18px;
+    }
+
+    .card-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+    <nav>
+            <div class="image"><img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk"  style="width: 150px; height: 57px; margin-left: 50px;"></div>
+            <div class="texte">
+                <p style="color: rgb(114, 17, 125); font-weight: bold; font-size: 30px; margin-bottom: 2px;">Entrainement du modèle</p>
+                <h6 style="color: gray; font-size: 10px; margin-bottom: 20px;">Système intelligent de prédiction du risque de defaut des clients</h6>
+            </div>
+            <a href="{% url 'home' %}" style="text-decoration: none;">
+                <div class="accueil">
+                    <img src="{% static 'images/accueil.png' %}" alt="Accueil" style="width: 20px; height: 16px; filter: brightness(0) invert(1); margin-bottom: 10px;">
+                    <p style="color: rgb(241, 244, 242) ; font-size: 15px; margin-left: 10px; margin-bottom: 5px;">Accueil</p>
+                </div>
+            </a>
+        </nav>
+<main>
+    <div class="block1">
+  <h2>Algorithmes d'apprentissage</h2>
+  <p class="description">Sélectionnez un ou plusieurs algorithmes à entraîner</p>
+
+  
+    <!-- Formulaire -->
+    <form method="post" onsubmit="showLoader()">
+        {% csrf_token %}
+
+        <div class="grid">
+            {% for algo in algorithmes %}
+            <div class="col-md-3">
+                <label class="algo-card">
+                    <input type="checkbox" name="modele" value="{{ algo.id }}">
+                    <div class="card " onclick="toggleSelect(this)">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ algo.name }}</h5>
+                            <p class="card-text">{{ algo.desc }}</p>
+                            <span class="checkmark">✔</span>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="format">
+           <p style="font-weight: bold; margin-left: 10px;">Avantages de l'entraînement multiple</p>
+                <ul style="margin-left: 10px;">
+            		<li>Comparaison automatique des performances</li>											
+                    <li>Sélection du meilleur modèle par score AUC</li>
+                    <li>Diversité d'approches pour robustesse</li>
+                    <li>Insights sur les algorithmes les plus adaptés</li>
+                    
+                </ul>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Entraîner</button>
+    </form>
+      <div id="loader" class="text-center mt-4" style="display:none;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Entraînement en cours...</span>
+        </div>
+        <p class="mt-2">L'entraînement est en cours, veuillez patienter...</p>
+    </div>
+        </div>
+
+ <a href="{% url 'resultat' %}"><div class="bouton">
+  <button type="submit" class="btn btn-primary">Voir les performances du modèle</button>
+ </div></a>
+       
+  </main>
+
+  <script>
+    function toggleSelect(card) {
+      card.classList.toggle("selected");
+    }
+
+    function showLoader() {
+    document.getElementById("loader").style.display = "block";
+}
+  </script>
+
+</body>
+</html>
