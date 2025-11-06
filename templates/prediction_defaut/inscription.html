@@ -7,7 +7,7 @@
         body {
             font-family: 'Segoe UI', 'Arial', sans-serif;
             background-color: #f4f6f8;
-            min-height: 100vh;
+            min-height: 140vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden; /* Empêche le scroll horizontal */
@@ -123,16 +123,10 @@ main {
 </head>
 <body>
     <main>
-        <img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk" style="width: 260px; height: 80px;">
+        <img src="{% static 'images/logo.png' %}" alt="Logo SmartRisk" style="width: 260px; height: 80px; margin-bottom: 10px;">
         <h2>Inscription</h2>
-        {% if messages %}
-            <ul class="messages">
-            {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-
+        
+        
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}

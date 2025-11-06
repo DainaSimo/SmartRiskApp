@@ -7,7 +7,7 @@ class CreditRequestForm(forms.ModelForm):
 
     class Meta:
         model = Client
-        exclude = ['id_client', 'date', 'score_de_risque', 'niveau']
+        exclude = ['id_client', 'date', 'score_de_risque', 'niveau', 'organisation', ' variable1_value', ' variable2_value']
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)  # 🔹 Récupérer la requête pour accéder à la session
@@ -19,6 +19,10 @@ class CreditRequestForm(forms.ModelForm):
 
         for field_name, field in self.fields.items():
             field.required = True
+
+        for f in ("organisation", "variable1_value", "variable2_value"):
+            if f in self.fields:
+                self.fields[f].required = False
         # 🔹 Construire la liste des choix de modèles
         choices = [("default", "Modèle par défaut")]
 

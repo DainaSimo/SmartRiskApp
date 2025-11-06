@@ -239,6 +239,16 @@
                     </div>
                 </div>
                 </div>
+                                {% if form.errors %}
+                <div style="color: red; margin-bottom: 10px;">
+                    <strong>Veuillez corriger les erreurs suivantes :</strong>
+                    <ul>
+                    {% for field, errors in form.errors.items %}
+                        <li>{{ field }} : {{ errors|join:", " }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
             <button type="submit" class="evaluer">
                 Evaluer le risque
             </button>

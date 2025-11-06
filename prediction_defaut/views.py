@@ -578,7 +578,7 @@ def prediction(request):
 
     if request.method == "POST" and "download_pdf" in request.POST:
         # PDF
-        result_data = request.session.get("last_prediction")
+        result_data = request.session.get(f"last_prediction_org_{organisation_id}")
         if not result_data:
             return HttpResponse("Aucune prédiction enregistrée.", status=400)
         response = HttpResponse(content_type="application/pdf")
